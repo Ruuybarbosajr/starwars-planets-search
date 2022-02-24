@@ -5,6 +5,7 @@ import fetchPlanets from '../services';
 
 function Provider({ children }) {
   const [data, setData] = useState([]);
+  const [filterName, setFilterName] = useState('');
 
   useEffect(() => {
     fetchPlanets().then((results) => {
@@ -13,15 +14,23 @@ function Provider({ children }) {
     });
   }, []);
 
+  const context = {
+    data,
+    filterByName: {
+      setFilterName,
+      name: filterName,
+    },
+  };
+
   return (
-    <Context.Provider value={ { data } }>
+    <Context.Provider value={ context }>
       {children}
     </Context.Provider>
   );
 }
 
 Provider.propTypes = {
-  children: PropTypes.objectOf(PropTypes.any).isRequired,
+  children: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default Provider;
