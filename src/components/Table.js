@@ -1,9 +1,10 @@
-import React, { useContext } from 'react';
-import Context from '../context/Context';
+import React from 'react';
+import useFiltersName from '../hooks/useFilterName';
+import useFiltersValue from '../hooks/useFiltersValues';
 
 export default function Table() {
-  const { data, filterByName } = useContext(Context);
-  const dataFilterByName = data.filter(({ name }) => name.includes(filterByName.name));
+  const data = useFiltersValue();
+  const arrFilter = useFiltersName(data);
 
   return (
     <table>
@@ -25,7 +26,7 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {dataFilterByName.map((objPlanets) => (
+        {arrFilter.map((objPlanets) => (
           <tr key={ objPlanets.name }>
             <td>{objPlanets.name}</td>
             <td>{objPlanets.rotation_period}</td>
