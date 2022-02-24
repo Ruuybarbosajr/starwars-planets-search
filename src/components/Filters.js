@@ -1,25 +1,13 @@
 import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
+import useSelectors from '../hooks/useSelectors';
 
 export default function Filters() {
   const { filterByNumericValues: { setFilterValues } } = useContext(Context);
+  const [arrColumns, arrValues] = useSelectors();
   const [column, setColumnFilter] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValueFilter] = useState(0);
-
-  const arrColumns = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water',
-  ];
-
-  const arrValues = [
-    'maior que',
-    'menor que',
-    'igual a',
-  ];
 
   return (
     <div>
