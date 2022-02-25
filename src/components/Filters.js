@@ -4,15 +4,22 @@ import useSelectors from '../hooks/useSelectors';
 
 export default function Filters() {
   const { filterByNumericValues: { setFilterValues } } = useContext(Context);
+
   const [arrColumns, arrValues] = useSelectors();
   const [column, setColumnFilter] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValueFilter] = useState(0);
 
+  function handleClick(columnSelector, comparisonSelector, valueSelector) {
+    setFilterValues((prevState) => (
+      [...prevState, {
+        column: columnSelector, comparison: comparisonSelector, value: valueSelector }]));
+    setColumnFilter(arrColumns[1] || 'population');
+  }
+
   return (
     <div>
       <select
-        value={ column }
         data-testid="column-filter"
         onChange={ ({ target }) => setColumnFilter(target.value) }
       >
@@ -48,8 +55,7 @@ export default function Filters() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ () => setFilterValues((prevState) => (
-          [...prevState, { column, comparison, value }])) }
+        onClick={ () => handleClick(column, comparison, value) }
       >
         Filtrar
       </button>

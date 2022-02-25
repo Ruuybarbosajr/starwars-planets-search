@@ -3,6 +3,7 @@ import Context from '../context/Context';
 
 export default function useSelectors() {
   const { filterByNumericValues: { filterValues } } = useContext(Context);
+
   const arrColumns = [
     'population',
     'orbital_period',
@@ -17,7 +18,8 @@ export default function useSelectors() {
     'igual a',
   ];
 
-  if (!filterValues.length) return [arrColumns, arrValues];
+  if (filterValues.length === 0) return [arrColumns, arrValues];
+
   return [[...arrColumns.filter((columnSelector) => (
-    filterValues.some(({ column }) => columnSelector !== column)))], arrValues];
+    filterValues.every(({ column }) => columnSelector !== column)))], arrValues];
 }
