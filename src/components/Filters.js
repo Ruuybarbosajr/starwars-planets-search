@@ -3,7 +3,10 @@ import Context from '../context/Context';
 import useSelectors from '../hooks/useSelectors';
 
 export default function Filters() {
-  const { filterByNumericValues: { setFilterValues } } = useContext(Context);
+  const {
+    filterByNumericValues: {
+      setFilterValues }, objectFilters, order: {
+      setOrder, setShowOrder } } = useContext(Context);
 
   const [arrColumns, arrValues] = useSelectors();
   const [column, setColumnFilter] = useState('population');
@@ -15,6 +18,10 @@ export default function Filters() {
       [...prevState, {
         column: columnSelector, comparison: comparisonSelector, value: valueSelector }]));
     setColumnFilter(arrColumns[1] || 'population');
+  }
+
+  function handleChangeOrder({ target }) {
+    setOrder((prevState) => ({ ...prevState, [target.name]: target.value }));
   }
 
   return (
@@ -46,18 +53,64 @@ export default function Filters() {
           </option>
         ))}
       </select>
-      <input
-        value={ value }
-        onChange={ ({ target }) => setValueFilter(target.value) }
-        data-testid="value-filter"
-        type="number"
-      />
+      <label htmlFor="value-filter">
+        <input
+          id="value-filter"
+          value={ value }
+          onChange={ ({ target }) => setValueFilter(target.value) }
+          data-testid="value-filter"
+          type="number"
+        />
+      </label>
       <button
         type="button"
         data-testid="button-filter"
         onClick={ () => handleClick(column, comparison, value) }
       >
         Filtrar
+      </button>
+      <select
+        name="column"
+        data-testid="column-sort"
+        onChange={ handleChangeOrder }
+      >
+        {objectFilters.arrColumns.map((columnSort) => (
+          <option
+            key={ columnSort }
+            value={ columnSort }
+          >
+            { columnSort }
+          </option>
+        ))}
+      </select>
+      <label htmlFor="column-sort-input-asc">
+        <input
+          id="column-sort-input-asc"
+          type="radio"
+          name="sort"
+          value="ASC"
+          data-testid="column-sort-input-asc"
+          onChange={ handleChangeOrder }
+        />
+        Acendente
+      </label>
+      <label htmlFor="column-sort-input-desc">
+        <input
+          name="sort"
+          value="DESC"
+          id="column-sort-input-desc"
+          type="radio"
+          data-testid="column-sort-input-desc"
+          onChange={ handleChangeOrder }
+        />
+        Descendente
+      </label>
+      <button
+        onClick={ () => setShowOrder((prevState) => !prevState) }
+        data-testid="column-sort-button"
+        type="button"
+      >
+        Ordenar
       </button>
     </div>
   );

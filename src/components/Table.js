@@ -1,10 +1,12 @@
 import React from 'react';
 import useFiltersName from '../hooks/useFilterName';
 import useFiltersValue from '../hooks/useFiltersValues';
+import useOrderTable from '../hooks/useOrderTable';
 
 export default function Table() {
   const data = useFiltersValue();
   const arrFilter = useFiltersName(data);
+  const arrOrderned = useOrderTable(arrFilter);
 
   return (
     <table>
@@ -26,9 +28,9 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {arrFilter.map((objPlanets) => (
+        {arrOrderned.map((objPlanets) => (
           <tr key={ objPlanets.name }>
-            <td>{objPlanets.name}</td>
+            <td data-testid="planet-name">{objPlanets.name}</td>
             <td>{objPlanets.rotation_period}</td>
             <td>{objPlanets.orbital_period}</td>
             <td>{objPlanets.diameter}</td>

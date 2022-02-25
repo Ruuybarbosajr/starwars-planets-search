@@ -7,16 +7,39 @@ function Provider({ children }) {
   const [data, setData] = useState([]);
   const [filterName, setFilterName] = useState('');
   const [filterValues, setFilterValues] = useState([]);
+  const [order, setOrder] = useState({
+    column: '',
+    sort: '',
+  });
+  const [showOrder, setShowOrder] = useState(false);
 
   useEffect(() => {
     fetchPlanets().then((results) => {
       results.forEach((objPlanet) => delete objPlanet.residents);
+      results.sort((planetA, planetB) => planetA.name.localeCompare(planetB.name));
       setData(results);
     });
   }, []);
 
+  const objectFilters = {
+    arrColumns: [
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ],
+
+    arrValues: [
+      'maior que',
+      'menor que',
+      'igual a',
+    ],
+  };
+
   const context = {
     data,
+    objectFilters,
     filterByName: {
       setFilterName,
       name: filterName,
@@ -24,6 +47,12 @@ function Provider({ children }) {
     filterByNumericValues: {
       setFilterValues,
       filterValues,
+    },
+    order: {
+      order,
+      setOrder,
+      showOrder,
+      setShowOrder,
     },
   };
 
