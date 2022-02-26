@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import Context from '../context/Context';
 
 export default function useOrderTable(arrFilter) {
-  const { order: { order, showOrder } } = useContext(Context);
+  const { order: { order } } = useContext(Context);
 
-  if (showOrder) {
+  if (order.column) {
     const arrUnknown = arrFilter.filter((planet) => planet[order.column] === 'unknown');
     const arrNotUnknown = arrFilter.filter(
       (planet) => planet[order.column] !== 'unknown',

@@ -3,7 +3,7 @@ import Context from '../context/Context';
 
 export default function ButtonsFilter() {
   const { filterByNumericValues:
-    { filterValues, setFilterValues } } = useContext(Context);
+    { filterValues, setFilterValues }, order: { setOrder } } = useContext(Context);
 
   function handleClick(columnButton) {
     setFilterValues((prevState) => (
@@ -24,7 +24,10 @@ export default function ButtonsFilter() {
         </div>
       )) }
       <button
-        onClick={ () => setFilterValues([]) }
+        onClick={ () => {
+          setFilterValues([]);
+          setOrder({ column: '', sort: '' });
+        } }
         type="button"
         data-testid="button-remove-filters"
       >

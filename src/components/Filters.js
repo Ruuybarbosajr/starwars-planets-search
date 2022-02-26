@@ -6,22 +6,20 @@ export default function Filters() {
   const {
     filterByNumericValues: {
       setFilterValues }, objectFilters, order: {
-      setOrder, setShowOrder } } = useContext(Context);
+      setOrder } } = useContext(Context);
 
   const [arrColumns, arrValues] = useSelectors();
   const [column, setColumnFilter] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   const [value, setValueFilter] = useState(0);
+  const [sort, setSort] = useState('');
+  const [columnSort, setColumnSort] = useState('');
 
   function handleClick(columnSelector, comparisonSelector, valueSelector) {
     setFilterValues((prevState) => (
       [...prevState, {
         column: columnSelector, comparison: comparisonSelector, value: valueSelector }]));
-    setColumnFilter(arrColumns[1] || 'population');
-  }
-
-  function handleChangeOrder({ target }) {
-    setOrder((prevState) => ({ ...prevState, [target.name]: target.value }));
+    setColumnFilter(arrColumns[1]);
   }
 
   return (
@@ -70,16 +68,17 @@ export default function Filters() {
         Filtrar
       </button>
       <select
+        value={ columnSort }
         name="column"
         data-testid="column-sort"
-        onChange={ handleChangeOrder }
+        onChange={ ({ target }) => setColumnSort(target.value) }
       >
-        {objectFilters.arrColumns.map((columnSort) => (
+        {objectFilters.arrColumns.map((columnFilterSort) => (
           <option
-            key={ columnSort }
-            value={ columnSort }
+            key={ columnFilterSort }
+            value={ columnFilterSort }
           >
-            { columnSort }
+            { columnFilterSort }
           </option>
         ))}
       </select>
@@ -90,7 +89,7 @@ export default function Filters() {
           name="sort"
           value="ASC"
           data-testid="column-sort-input-asc"
-          onChange={ handleChangeOrder }
+          onChange={ ({ target }) => setSort(target.value) }
         />
         Acendente
       </label>
@@ -101,12 +100,12 @@ export default function Filters() {
           id="column-sort-input-desc"
           type="radio"
           data-testid="column-sort-input-desc"
-          onChange={ handleChangeOrder }
+          onChange={ ({ target }) => setSort(target.value) }
         />
         Descendente
       </label>
       <button
-        onClick={ () => setShowOrder((prevState) => !prevState) }
+        onClick={ () => setOrder({ column: columnSort, sort }) }
         data-testid="column-sort-button"
         type="button"
       >
