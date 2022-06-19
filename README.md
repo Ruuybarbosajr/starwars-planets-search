@@ -1,4 +1,4 @@
-# Boas vindas ao repositório do projeto Starwars Planets Search em context api e hooks!
+# Boas vindas ao repositório do Starwars Planets Search!
 
 # Habilidades
 
